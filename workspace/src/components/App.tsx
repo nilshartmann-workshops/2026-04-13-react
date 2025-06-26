@@ -1,7 +1,7 @@
 export default function App() {
   return (
-    <div>
-      <h1 className={"app-header"}>🌱 Hello React 👋 </h1>
+    <div className={"AppContainer"}>
+      <h1 className={"AppHeader"}>🌱 Hello React 👋 </h1>
     </div>
   );
 }
