@@ -3,11 +3,13 @@ import { ChangeEvent } from "react";
 type IntervalSelectorProps = {
   interval?: number;
   onIntervalChange(newInterval: number): void;
+  error?: boolean;
 };
 
 export default function IntervalSelector({
   interval,
   onIntervalChange,
+  error,
 }: IntervalSelectorProps) {
   const handleIntervalChange = (e: ChangeEvent<HTMLInputElement>) => {
     const valueAsString = e.target.value;
@@ -25,6 +27,7 @@ export default function IntervalSelector({
         type={"number"}
         value={interval || ""}
         onChange={handleIntervalChange}
+        className={error ? "error" : undefined}
       />
       <button
         type="button"
