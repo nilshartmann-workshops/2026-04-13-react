@@ -1,13 +1,19 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent } from "react";
 
-export default function IntervalSelector() {
-  const [interval, setInterval] = useState(1);
+type IntervalSelectorProps = {
+  interval?: number;
+  onIntervalChange(newInterval: number): void;
+};
 
+export default function IntervalSelector({
+  interval,
+  onIntervalChange,
+}: IntervalSelectorProps) {
   const handleIntervalChange = (e: ChangeEvent<HTMLInputElement>) => {
     const valueAsString = e.target.value;
 
     // alternativ parseInt
-    setInterval(Number(valueAsString));
+    onIntervalChange(Number(valueAsString));
   };
 
   // Validierung (z.B. keine negativen Zahlen) machen wir später
@@ -15,17 +21,35 @@ export default function IntervalSelector() {
   return (
     <div className={""}>
       <label>Interval</label>
-      <input type={"number"} value={interval} onChange={handleIntervalChange} />
-      <button type="button" className={"sm"} onClick={() => setInterval(1)}>
+      <input
+        type={"number"}
+        value={interval || ""}
+        onChange={handleIntervalChange}
+      />
+      <button
+        type="button"
+        className={"sm"}
+        onClick={() => onIntervalChange(1)}
+      >
         Dayly
       </button>
-      <button type="button" className={"sm"} onClick={() => setInterval(7)}>
+      <button
+        type="button"
+        className={"sm"}
+        onClick={() => onIntervalChange(7)}
+      >
         Weekly
       </button>
-      <button type="button" className={"sm"} onClick={() => setInterval(14)}>
+      <button
+        type="button"
+        className={"sm"}
+        onClick={() => onIntervalChange(14)}
+      >
         Biweekly
       </button>
-      <div className={"px-1 text-sm"}>Alle {interval} Tage gießen</div>
+      {interval !== undefined && (
+        <div className={"px-1 text-sm"}>Alle {interval} Tage gießen</div>
+      )}
     </div>
   );
 }
