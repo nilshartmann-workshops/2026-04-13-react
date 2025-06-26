@@ -1,7 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import ky from "ky";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod/v4";
 
+import { Plant } from "../types.ts";
 import IntervalSelector from "./IntervalSelector.tsx";
 
 const locations = [
@@ -34,8 +36,16 @@ export default function PlantForm() {
     resolver: zodResolver(PlantFormState),
   });
 
-  const handleSave = (data: PlantFormState) => {
+  const handleSave = async (data: PlantFormState) => {
     console.log("DATA", data);
+
+    const response = await ky
+      .post("http://localhost:7200/api/plants", {
+        json: data,
+      })
+      .json();
+    const newPlant = Plant.parse(response);
+    console.log("Neue Pflanze", newPlant);
   };
 
   const handleError = (errs: any) => {

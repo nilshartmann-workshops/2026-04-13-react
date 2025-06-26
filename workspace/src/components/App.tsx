@@ -1,6 +1,8 @@
+import ky from "ky";
 import { useState } from "react";
 
 import { Plant } from "../types.ts";
+import PlantCardList from "./PlantCardList.tsx";
 import PlantForm from "./PlantForm.tsx";
 
 const allPlants: Plant[] = [
@@ -21,8 +23,27 @@ const allPlants: Plant[] = [
 
 export default function App() {
   const [interval, setInterval] = useState<number>();
+  const [plants, setPlants] = useState<Plant[]>([]);
+
+  const loadPlants = async () => {
+    const response = await ky.get("http://localhost:7200/api/plants").json();
+    const plantsLoaded = Plant.array().parse(response);
+    setPlants(plantsLoaded);
+  };
+
+  const loadPlantsWithFetch = async () => {
+    const response = await fetch("http://localhost:7200/api/plants");
+    const body = await response.json();
+    const plantsLoaded = Plant.array().parse(body);
+    setPlants(plantsLoaded);
+  };
+
   return (
     <div className={"AppContainer"}>
+      <button onClick={() => loadPlantsWithFetch()} className={"primary"}>
+        Lade Pflanzen
+      </button>
+      <PlantCardList plants={plants} />
       <PlantForm />
       {/* form wird später durch "echte" Form ersetzt, hier nur wegen Styling */}
       {/*<form>*/}
