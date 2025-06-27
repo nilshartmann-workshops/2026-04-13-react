@@ -1,5 +1,6 @@
 import ky from "ky";
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 
 import { Plant } from "../types.ts";
 import PlantCardListLoader from "./PlantCardListLoader.tsx";
@@ -53,31 +54,22 @@ export default function App() {
 
   return (
     <div className={"AppContainer"}>
-      {/*<button className={"primary"} onClick={() => setShowCounter(!showCounter)}>Show/Hide Counter</button>*/}
-      {/*{showCounter && <Counter />}*/}
-      {/*<button onClick={() => loadPlantsWithFetch()} className={"primary"}>*/}
-      {/*  Lade Pflanzen*/}
-      {/*</button>*/}
-      {/*<PlantCardList plants={plants} />*/}
-      <PlantCardListLoader />
+      <ErrorBoundary
+        fallback={
+          <div className={"error-message"}>
+            Fehler beim Laden der Pflanzen 🥀
+          </div>
+        }
+      >
+        <Suspense
+          fallback={
+            <div className={"CardListFallback"}>Pflanzen werden geladen...</div>
+          }
+        >
+          <PlantCardListLoader />
+        </Suspense>
+      </ErrorBoundary>
       <PlantForm />
-      {/* form wird später durch "echte" Form ersetzt, hier nur wegen Styling */}
-      {/*<form>*/}
-      {/*  <IntervalSelector interval={interval} onIntervalChange={setInterval} />*/}
-      {/*</form>*/}
-      {/*<PlantCardList plants={allPlants} />*/}
-      {/*<PlantCard*/}
-      {/*  name={"Aloe Vera"}*/}
-      {/*  location={"Schlafzimmer"}*/}
-      {/*  wateringInterval={12}*/}
-      {/*  lastWatered={"2025-06-16"}*/}
-      {/*/>*/}
-
-      {/*<PlantCard*/}
-      {/*  name={"Orchidee"}*/}
-      {/*  location={"Wohnzimmer"}*/}
-      {/*  wateringInterval={20}*/}
-      {/*/>*/}
     </div>
   );
 }
