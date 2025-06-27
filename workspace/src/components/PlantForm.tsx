@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import ky from "ky";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod/v4";
@@ -36,16 +37,27 @@ export default function PlantForm() {
     resolver: zodResolver(PlantFormState),
   });
 
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    async mutationFn(data: PlantFormState) {
+      const response = await ky
+        .post("http://localhost:7200/api/plants", {
+          json: data,
+        })
+        .json();
+      const newPlant = Plant.parse(response);
+      return newPlant;
+    },
+    onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ["plants", "list"] });
+    },
+  });
+
   const handleSave = async (data: PlantFormState) => {
     console.log("DATA", data);
 
-    const response = await ky
-      .post("http://localhost:7200/api/plants", {
-        json: data,
-      })
-      .json();
-    const newPlant = Plant.parse(response);
-    console.log("Neue Pflanze", newPlant);
+    mutation.mutate(data);
   };
 
   const handleError = (errs: any) => {
@@ -125,6 +137,12 @@ export default function PlantForm() {
           Pflanze hinzufügen 🌱
         </button>
       </div>
+      {mutation.isError && (
+        <div className={"error-message"}>Speichern fehlgeschlagen</div>
+      )}
+      {mutation.isSuccess && (
+        <div className={"success-message"}>Pflanze angelegt</div>
+      )}
     </form>
   );
 }
