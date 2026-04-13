@@ -32,7 +32,7 @@ export default function IntervalSelector() {
            onChange={ event => setInterval(parseInt(event.target.value)) } />
     <button className={"secondary"} type={"button"} onClick={() => setInterval(1)}>Täglich</button>
     <button className={"secondary"} type={"button"} onClick={handleWeeklyClick}>7-tägig</button>
-    <button className={"secondary"} type={"button"}>14-tägig</button>
+    <button className={"secondary"} type={"button"} onClick={() => setInterval(14)}>14-tägig</button>
     <div>Alle {interval} Tage gießen</div>
   </div>
 
