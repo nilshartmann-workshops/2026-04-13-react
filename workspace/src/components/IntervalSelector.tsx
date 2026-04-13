@@ -17,7 +17,7 @@ export default function IntervalSelector() {
   // const state = useState(1);
   // const interval = state[0];
   // const setInterval = state[1];
-  const [ interval, setInterval ] = useState(112);
+  const [ interval, setInterval ] = useState(1);
 
   // const deferredValue = useDeferredValue(interval, 200);
   // useDebounce https://usehooks.com/usedebounce
