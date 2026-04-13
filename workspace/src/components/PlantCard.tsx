@@ -34,6 +34,7 @@ type PlantCardProps = {
 
 /// export default function PlantCard( props : PlantCardProps) {
 // Destructuring Operator { ... }
+
 export default function PlantCard( { name, location, lastWatered, wateringInterval }: PlantCardProps) {
   // JSX
   // Properties (XML/HTML Attribute)
