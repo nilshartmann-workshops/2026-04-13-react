@@ -23,6 +23,8 @@ lastWatered: "2026-04-13"
 // }
 
 
+import { getDaysUntilWatering } from "./date-utils.ts";
+
 type PlantCardProps = {
   name: string;
   location: string;
@@ -47,6 +49,8 @@ export default function PlantCard( { name, location, lastWatered, wateringInterv
   //     ? "Jeden Tag gießen"
   //     : `Alle ${props.wateringInterval} Tage gießen`;
 
+  const daysUntil = getDaysUntilWatering(lastWatered || "2026-04-13", wateringInterval);
+
   return (
     <div className={"PlantCard"}>
       <header>
@@ -56,6 +60,7 @@ export default function PlantCard( { name, location, lastWatered, wateringInterv
       <section>
         <div>{wateringInfo}</div>
         {lastWatered ? <div>Zuletzt: {lastWatered}</div> : null }
+        <div className={daysUntil < 0 ? "error-message" : "success-message"}>Nächstes Mal gießen in {daysUntil} Tagen</div>
       </section>
     </div>
   );
