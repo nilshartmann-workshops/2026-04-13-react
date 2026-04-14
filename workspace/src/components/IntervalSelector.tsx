@@ -11,29 +11,39 @@ import { useDeferredValue, useState } from "react";
 //  - Styled Components
 //  - Material UI (MUI)
 
-export default function IntervalSelector() {
+type IntervalSelectorProps = {
+  interval: number;
+  onIntervalChange(newInterval: number): void
+}
 
+// void onIntervalChange(int newInterval)
+
+export default function IntervalSelector(props: IntervalSelectorProps) {
+
+  // Kontrollierte Komponenten (controlled componente)
+  // Unkontrollierte Komponenten (uncontrolled componente)
   // "Zustand" (State)   (Model)
   // const state = useState(1);
   // const interval = state[0];
   // const setInterval = state[1];
-  const [ interval, setInterval ] = useState(1);
+
 
   // const deferredValue = useDeferredValue(interval, 200);
   // useDebounce https://usehooks.com/usedebounce
 
   const handleWeeklyClick = () => {
-    setInterval(7)
+    props.onIntervalChange(7)
   }
 
   return <div className={styles.IntervalSelector + " " + styles.Small}>
     <label>Interval</label>
-    <input type={"number"} value={interval}
-           onChange={ event => setInterval(parseInt(event.target.value)) } />
-    <button className={"secondary"} type={"button"} onClick={() => setInterval(1)}>Täglich</button>
+    <input type={"number"}
+           value={props.interval}
+           onChange={ event => props.onIntervalChange(parseInt(event.target.value)) } />
+    <button className={"secondary"} type={"button"} onClick={() => props.onIntervalChange(1)}>Täglich</button>
     <button className={"secondary"} type={"button"} onClick={handleWeeklyClick}>7-tägig</button>
-    <button className={"secondary"} type={"button"} onClick={() => setInterval(14)}>14-tägig</button>
-    <div>Alle {interval} Tage gießen</div>
+    <button className={"secondary"} type={"button"} onClick={() => props.onIntervalChange(14)}>14-tägig</button>
+    <div>Alle {props.interval} Tage gießen</div>
   </div>
 
 }

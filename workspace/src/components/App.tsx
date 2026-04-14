@@ -21,40 +21,39 @@ const allPlants: Plant[] = [
 ];
 
 
+
 export default function App() {
 
+  // use-Funktionen: "Hook-Funktion"
+  const [ interval, setInterval ] = useState(20);
   const [isIntervalSelectorVisible, setIsIntervalSelectorVisible] = useState(true)
-  const [counter, setCounter] = useState(1);
 
-  // Ausdruck:
-  const x = isIntervalSelectorVisible ? "Sichtbar" : "Nicht sichtbar";
+  const errorMsg = interval === 0 ? "Bitte keine 0 eingeben": null;
 
-  // Anweisung:
-  let y;
-  if (isIntervalSelectorVisible) {
-    y = "Sichtbar"
-  } else {
-    y = "Nicht sichtbar"
-  }
-
-  // Ausdrücke Expression  ?-Operator Funktionsaufruf &&-Operator ||-Operator
-  // Anweisung Statements   if switch goto
+//   window.document.title = "React Workshop";
 
 
+  // Virtual DOM -> Beschreibung der Oberfläche
   return (
     <div className={"AppContainer"}>
 
       <button onClick={
         () => setIsIntervalSelectorVisible(!isIntervalSelectorVisible)}
       >Ein-/ausschalten</button>
+
+      {isIntervalSelectorVisible ? <IntervalSelector
+        interval={interval}
+        onIntervalChange={newInterval => {
+          setInterval(newInterval);
+        }}
+
+      /> : null}
+      {errorMsg}
+
+      <div>Interval in App-Komponente: {interval}</div>
       <div>
-        <button onClick={() => setCounter(counter+1)}>Count: {counter}</button>
+        <button type={"button"} onClick={() => setInterval(400)}>Auf 400 setzen</button>
       </div>
-
-      {isIntervalSelectorVisible ? <IntervalSelector /> : null}
-      {/*{isIntervalSelectorVisible && <IntervalSelector />}*/}
-      {/*{isIntervalSelectorVisible || "Nicht sichtbar"}*/}
-
 
 
       {/*<PlantCardList plants={allPlants} />*/}
