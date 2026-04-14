@@ -12,7 +12,7 @@ import { useDeferredValue, useState } from "react";
 //  - Material UI (MUI)
 
 type IntervalSelectorProps = {
-  interval: number;
+  interval?: number;
   onIntervalChange(newInterval: number): void
 }
 
@@ -30,16 +30,24 @@ export default function IntervalSelector(props: IntervalSelectorProps) {
 
   // const deferredValue = useDeferredValue(interval, 200);
   // useDebounce https://usehooks.com/usedebounce
-
   const handleWeeklyClick = () => {
     props.onIntervalChange(7)
   }
 
+  const myInterval = props.interval === undefined ? "" : props.interval;
+
+console.log("myInterval", myInterval);
+
   return <div className={styles.IntervalSelector + " " + styles.Small}>
     <label>Interval</label>
     <input type={"number"}
-           value={props.interval}
-           onChange={ event => props.onIntervalChange(parseInt(event.target.value)) } />
+           value={myInterval}
+           onChange={ event => {
+             console.log("Value", event.target.value);
+             const parsedInterval = parseInt(event.target.value);
+             console.log("parsedInterval", parsedInterval)
+             props.onIntervalChange(parsedInterval)
+           }} />
     <button className={"secondary"} type={"button"} onClick={() => props.onIntervalChange(1)}>Täglich</button>
     <button className={"secondary"} type={"button"} onClick={handleWeeklyClick}>7-tägig</button>
     <button className={"secondary"} type={"button"} onClick={() => props.onIntervalChange(14)}>14-tägig</button>

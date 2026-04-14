@@ -25,7 +25,7 @@ const allPlants: Plant[] = [
 export default function App() {
 
   // use-Funktionen: "Hook-Funktion"
-  const [ interval, setInterval ] = useState(20);
+  const [ interval, setInterval ] = useState<number>(1);
   const [isIntervalSelectorVisible, setIsIntervalSelectorVisible] = useState(true)
 
   const errorMsg = interval === 0 ? "Bitte keine 0 eingeben": null;
