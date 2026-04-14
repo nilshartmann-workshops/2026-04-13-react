@@ -1,4 +1,5 @@
 import { z } from "zod/v4";
+import dayjs, { Dayjs } from "dayjs";
 
 // export type Plant = {
 //   id: string;
@@ -10,14 +11,17 @@ import { z } from "zod/v4";
 
 // TypeScript = JavaScript + Typsystem
 //  TypeScript striping
-
 export const Plant = z.object({
   id: z.string(),
-  name: z.string().nonempty("Pflanzenname fehlt!"),
+  name: z.string().nonempty(),
   location: z.string().nonempty(),
   wateringInterval: z.number().min(1),
-  lastWatered: z.iso.date().optional()
-})
+  lastWatered: z.iso.date().optional(),
+
+  // dayjs-Objekte im Schema:
+  //  https://github.com/colinhacks/zod/discussions/1259#discussioncomment-7866342
+  // myDate: z.custom<Dayjs>(val => val instanceof dayjs)
+});
 
 export type Plant = z.infer<typeof Plant>;
 //
@@ -30,7 +34,8 @@ export type Plant = z.infer<typeof Plant>;
 //   name: "Tulpe",
 //   location: "Küche",
 //   wateringInterval: 7,
-//   lastWatered: "2026-04-14"
+//   lastWatered: "2026-04-14",
+//   myDate: "fsafsdfsdf"
 // })
 //
 // printPlant(p);

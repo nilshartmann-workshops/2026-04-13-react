@@ -3,6 +3,7 @@ import PlantCardList from "./PlantCardList.tsx";
 import { Plant } from "./types.ts";
 import IntervalSelector from "./IntervalSelector.tsx";
 import { use, useState } from "react";
+import PlantForm from "./PlantForm.tsx";
 
 const allPlants: Plant[] = [
   {
@@ -37,23 +38,25 @@ export default function App() {
   return (
     <div className={"AppContainer"}>
 
-      <button onClick={
-        () => setIsIntervalSelectorVisible(!isIntervalSelectorVisible)}
-      >Ein-/ausschalten</button>
+      <PlantForm />
 
-      {isIntervalSelectorVisible ? <IntervalSelector
-        interval={interval}
-        onIntervalChange={newInterval => {
-          setInterval(newInterval);
-        }}
+      {/*<button onClick={*/}
+      {/*  () => setIsIntervalSelectorVisible(!isIntervalSelectorVisible)}*/}
+      {/*>Ein-/ausschalten</button>*/}
 
-      /> : null}
-      {errorMsg}
+      {/*{isIntervalSelectorVisible ? <IntervalSelector*/}
+      {/*  interval={interval}*/}
+      {/*  onIntervalChange={newInterval => {*/}
+      {/*    setInterval(newInterval);*/}
+      {/*  }}*/}
 
-      <div>Interval in App-Komponente: {interval}</div>
-      <div>
-        <button type={"button"} onClick={() => setInterval(400)}>Auf 400 setzen</button>
-      </div>
+      {/*/> : null}*/}
+      {/*{errorMsg}*/}
+
+      {/*<div>Interval in App-Komponente: {interval}</div>*/}
+      {/*<div>*/}
+      {/*  <button type={"button"} onClick={() => setInterval(400)}>Auf 400 setzen</button>*/}
+      {/*</div>*/}
 
 
       {/*<PlantCardList plants={allPlants} />*/}
