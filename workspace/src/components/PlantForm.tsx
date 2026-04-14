@@ -1,7 +1,8 @@
 import { z } from "zod/v4";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FieldError, useForm } from "react-hook-form";
+import { Controller, FieldError, useForm } from "react-hook-form";
 import { NewPlant } from "./types.ts";
+import IntervalSelector from "./IntervalSelector.tsx";
 
 const locations = [
   "Wohnzimmer",
@@ -42,6 +43,19 @@ export default function PlantForm() {
         {locations.map(location => <option key={location} value={location}>{location}</option>)}
       </select>
       <ErrorMessage error={form.formState.errors.location} />
+    </div>
+
+    <div className={"FormControl"}>
+      <Controller control={form.control}
+                  name={"wateringInterval"}
+                  render={(field) => {
+                    return <IntervalSelector
+                      interval={field.field.value}
+                      onIntervalChange={newInterval => field.field.onChange(newInterval)} />
+                  }}
+      />
+      <ErrorMessage error={form.formState.errors.wateringInterval} />
+
     </div>
 
     <div className={"FormControl"}>

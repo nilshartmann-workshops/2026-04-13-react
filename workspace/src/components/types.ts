@@ -26,7 +26,7 @@ export const Plant = z.object({
 export type Plant = z.infer<typeof Plant>;
 
 export const NewPlant = Plant.omit(
-  { id: true, wateringInterval: true }
+  { id: true }
 )
 
 export type NewPlant = z.infer<typeof NewPlant>;
