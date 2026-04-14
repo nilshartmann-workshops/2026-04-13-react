@@ -15,15 +15,22 @@ export const Plant = z.object({
   id: z.string(),
   name: z.string().nonempty(),
   location: z.string().nonempty(),
-  wateringInterval: z.number().min(1),
   lastWatered: z.iso.date().optional(),
+
+  wateringInterval: z.number().min(1),
 
   // dayjs-Objekte im Schema:
   //  https://github.com/colinhacks/zod/discussions/1259#discussioncomment-7866342
   // myDate: z.custom<Dayjs>(val => val instanceof dayjs)
 });
-
 export type Plant = z.infer<typeof Plant>;
+
+export const NewPlant = Plant.omit(
+  { id: true, wateringInterval: true }
+)
+
+export type NewPlant = z.infer<typeof NewPlant>;
+
 //
 // function printPlant(plant: Plant) {
 //   console.log(plant.name)

@@ -1,3 +1,7 @@
+import { z } from "zod/v4";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { NewPlant } from "./types.ts";
 
 const locations = [
   "Wohnzimmer",
@@ -9,15 +13,29 @@ const locations = [
 
 export default function PlantForm() {
 
-  return <form>
+  const form = useForm({
+    resolver: zodResolver(NewPlant)
+  });
+
+  const handleFormSubmitForm = (data: NewPlant) => {
+    console.log("Formular Daten", data);
+  }
+
+  const handleError = (err: any) => {
+    console.log("Formular Fehler", err);
+  }
+
+  return <form onSubmit={form.handleSubmit(handleFormSubmitForm, handleError)}>
     <div className={"FormControl"}>
       <label>Name der Pflanze</label>
-      <input type={"text"} />
+      <input type={"text"}
+             {...form.register("name")}
+      />
     </div>
 
     <div className={"FormControl"}>
       <label>Standort</label>
-      <select>
+      <select {...form.register("location")}>
         <option value={""}>Standort wählen...</option>
 
         {locations.map(location => <option key={location} value={location}>{location}</option>)}
@@ -28,7 +46,9 @@ export default function PlantForm() {
       <label>
         Zuletzt gegossen
       </label>
-      <input type={"date"} />
+      <input type={"date"} {...form.register("lastWatered", {
+        setValueAs: value => value === "" ? undefined : value
+      })}/>
     </div>
 
     <div className={"FormButtons"}>
