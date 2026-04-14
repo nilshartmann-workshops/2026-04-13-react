@@ -1,6 +1,6 @@
 import { z } from "zod/v4";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { FieldError, useForm } from "react-hook-form";
 import { NewPlant } from "./types.ts";
 
 const locations = [
@@ -31,6 +31,7 @@ export default function PlantForm() {
       <input type={"text"}
              {...form.register("name")}
       />
+      <ErrorMessage error={form.formState.errors.name} />
     </div>
 
     <div className={"FormControl"}>
@@ -40,6 +41,7 @@ export default function PlantForm() {
 
         {locations.map(location => <option key={location} value={location}>{location}</option>)}
       </select>
+      <ErrorMessage error={form.formState.errors.location} />
     </div>
 
     <div className={"FormControl"}>
@@ -49,12 +51,29 @@ export default function PlantForm() {
       <input type={"date"} {...form.register("lastWatered", {
         setValueAs: value => value === "" ? undefined : value
       })}/>
+      <ErrorMessage error={form.formState.errors.lastWatered} />
     </div>
 
     <div className={"FormButtons"}>
+      <button type={"button"} className={"secondary"} onClick={() => form.reset()}>Formular leeren</button>
       <button type={"submit"} className={"primary"}>Pflanze speichern</button>
     </div>
 
   </form>
 
+}
+
+type ErrorMessageProps = {
+  error: FieldError | undefined  // Union Type
+}
+
+function ErrorMessage(props: ErrorMessageProps) {
+
+  if (!props.error) { // Type Narrowing, Type Guard
+    return null;
+  }
+
+  console.log("props.error", props.error);
+
+  return <span className={"error-message"}>{props.error.message}</span>
 }

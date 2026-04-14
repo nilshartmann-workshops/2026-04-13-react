@@ -13,8 +13,8 @@ import dayjs, { Dayjs } from "dayjs";
 //  TypeScript striping
 export const Plant = z.object({
   id: z.string(),
-  name: z.string().nonempty(),
-  location: z.string().nonempty(),
+  name: z.string().nonempty("Bitte Pflanzennamen eingeben"),
+  location: z.string().nonempty("Bitte Standort eingeben"),
   lastWatered: z.iso.date().optional(),
 
   wateringInterval: z.number().min(1),
