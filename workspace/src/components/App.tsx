@@ -4,6 +4,8 @@ import { Plant } from "./types.ts";
 import IntervalSelector from "./IntervalSelector.tsx";
 import { use, useEffect, useState } from "react";
 import PlantForm from "./PlantForm.tsx";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import PlantCardListLoader from "./PlantCardListLoader.tsx";
 
 // const allPlants: Plant[] = [
 //   {
@@ -25,42 +27,13 @@ import PlantForm from "./PlantForm.tsx";
 // Render Phase -> virtual DOM -> Seiteneffekte verboten!!!!!!!!!!!!
 // Commit Phase: virtual DOM -> "echter" DOM  <--- Seiteneffekte erlaubt!
 export default function App() {
-  const [ interval, setInterval ] = useState<number>(1);
-  const [plants, setPlants] = useState<Plant[]>([]);
 
-  // async function loadPlants() { ... }
-  const loadPlants = async () => {
-    // fetch API (Browser API)
-    // axios (Bibliothek)
-    // ky (Bibliothek)
-    const response = await fetch("http://localhost:7200/api/plants?slow=2000");
-    const data = await response.json();
-    // const plants = data as Plant[];  // <-- Type cast, nur zur Buildzeit
-    const plants = Plant.array().parse(data); // <-- Validierung zur Laufzeit
-    console.log("PLANTS", plants);
-    setPlants(plants);
-  }
-
-
-
-  // Virtual DOM -> Beschreibung der Oberfläche -> keine Seiteneffekte!
 
   return (
     <div className={"AppContainer"}>
-
       {/*<PlantForm />*/}
+      <PlantCardListLoader />
 
-      {/*<button className={"primary"} onClick={() => loadPlants()}>Lade Pflanzen</button>*/}
-      <PlantCardList plants={plants} />
-
-      {/*<PlantForm />*/}
-
-      {/*<PlantCard*/}
-      {/*  name={"Tulpe"}*/}
-      {/*  location={"Küche"}*/}
-      {/*  wateringInterval={7}*/}
-      {/*  lastWatered="2026-04-13"*/}
-      {/*/>*/}
     </div>
   );
 }
