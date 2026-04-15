@@ -18,8 +18,20 @@ export default function PlantForm() {
     resolver: zodResolver(NewPlant)
   });
 
-  const handleFormSubmitForm = (data: NewPlant) => {
+  const handleFormSubmitForm = async (data: NewPlant) => {
     console.log("Formular Daten", data);
+
+    const response = await fetch("http://localhost:7200/api/plants", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json"
+      },
+      body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+      console.log("Fehler!");
+    }
   }
 
   const handleError = (err: any) => {

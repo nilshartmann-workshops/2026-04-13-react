@@ -5,21 +5,21 @@ import IntervalSelector from "./IntervalSelector.tsx";
 import { use, useState } from "react";
 import PlantForm from "./PlantForm.tsx";
 
-const allPlants: Plant[] = [
-  {
-    id: "1",
-    name: "Aloe Vera",
-    location: "Schlafzimmer",
-    wateringInterval: 12,
-    lastWatered: "2026-04-06",
-  },
-  {
-    id: "2",
-    name: "Orchidee",
-    location: "Wohnzimmer",
-    wateringInterval: 20,
-  },
-];
+// const allPlants: Plant[] = [
+//   {
+//     id: "1",
+//     name: "Aloe Vera",
+//     location: "Schlafzimmer",
+//     wateringInterval: 12,
+//     lastWatered: "2026-04-06",
+//   },
+//   {
+//     id: "2",
+//     name: "Orchidee",
+//     location: "Wohnzimmer",
+//     wateringInterval: 20,
+//   },
+// ];
 
 
 
@@ -27,39 +27,34 @@ export default function App() {
 
   // use-Funktionen: "Hook-Funktion"
   const [ interval, setInterval ] = useState<number>(1);
-  const [isIntervalSelectorVisible, setIsIntervalSelectorVisible] = useState(true)
 
-  const errorMsg = interval === 0 ? "Bitte keine 0 eingeben": null;
 
-//   window.document.title = "React Workshop";
+  const [plants, setPlants] = useState<Plant[]>([]);
 
+  // async function loadPlants() { ... }
+  const loadPlants = async () => {
+    // fetch API (Browser API)
+    // axios (Bibliothek)
+    // ky (Bibliothek)
+
+    const response = await fetch("http://localhost:7200/api/plants");
+    const data = await response.json();
+    // const plants = data as Plant[];  // <-- Type cast, nur zur Buildzeit
+    const plants = Plant.array().parse(data); // <-- Validierung zur Laufzeit
+    console.log("PLANTS", plants);
+    setPlants(plants);
+  }
 
   // Virtual DOM -> Beschreibung der Oberfläche
   return (
     <div className={"AppContainer"}>
 
+      {/*<PlantForm />*/}
+
+      <button className={"primary"} onClick={() => loadPlants()}>Lade Pflanzen</button>
+
       <PlantForm />
-
-      {/*<button onClick={*/}
-      {/*  () => setIsIntervalSelectorVisible(!isIntervalSelectorVisible)}*/}
-      {/*>Ein-/ausschalten</button>*/}
-
-      {/*{isIntervalSelectorVisible ? <IntervalSelector*/}
-      {/*  interval={interval}*/}
-      {/*  onIntervalChange={newInterval => {*/}
-      {/*    setInterval(newInterval);*/}
-      {/*  }}*/}
-
-      {/*/> : null}*/}
-      {/*{errorMsg}*/}
-
-      {/*<div>Interval in App-Komponente: {interval}</div>*/}
-      {/*<div>*/}
-      {/*  <button type={"button"} onClick={() => setInterval(400)}>Auf 400 setzen</button>*/}
-      {/*</div>*/}
-
-
-      {/*<PlantCardList plants={allPlants} />*/}
+      <PlantCardList plants={plants} />
 
       {/*<PlantCard*/}
       {/*  name={"Tulpe"}*/}
