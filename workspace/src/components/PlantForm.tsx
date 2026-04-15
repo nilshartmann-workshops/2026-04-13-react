@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, FieldError, useForm } from "react-hook-form";
 import { NewPlant } from "./types.ts";
 import IntervalSelector from "./IntervalSelector.tsx";
+import { useMutation } from "@tanstack/react-query";
 
 const locations = [
   "Wohnzimmer",
@@ -18,21 +19,33 @@ export default function PlantForm() {
     resolver: zodResolver(NewPlant)
   });
 
+  const mutation = useMutation({
+    async mutationFn(data: NewPlant) {
+      const response = await fetch("http://localhost:7200/api/plants", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (!response.ok) {
+        console.log("Fehler!");
+      }
+    },
+    onSuccess(data, variables, result, context) {
+      context.client.invalidateQueries({
+        queryKey: ["plants"]
+      })
+    }
+  })
+
   const handleFormSubmitForm = async (data: NewPlant) => {
     console.log("Formular Daten", data);
 
-    const response = await fetch("http://localhost:7200/api/plants", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json"
-      },
-      body: JSON.stringify(data)
-    });
-
-    if (!response.ok) {
-      console.log("Fehler!");
-    }
+    mutation.mutate(data);
   }
+
 
   const handleError = (err: any) => {
     console.log("Formular Fehler", err);
@@ -82,8 +95,13 @@ export default function PlantForm() {
 
     <div className={"FormButtons"}>
       <button type={"button"} className={"secondary"} onClick={() => form.reset()}>Formular leeren</button>
-      <button type={"submit"} className={"primary"}>Pflanze speichern</button>
+      <button type={"submit"} className={"primary"}
+        disabled={mutation.isPending}
+      >Pflanze speichern</button>
     </div>
+
+    {mutation.isSuccess && <div className={"success-message"}>Pflanze wurde gespeichert!</div> }
+    {mutation.isError && <div className={"error-message"}>Pflanze wurde NICHT gespeichert!</div> }
 
   </form>
 

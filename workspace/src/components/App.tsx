@@ -36,7 +36,7 @@ export default function App() {
 
   return (
     <div className={"AppContainer"}>
-      {/*<PlantForm />*/}
+      <PlantForm />
 
       <ErrorBoundary
         onReset={reset}
