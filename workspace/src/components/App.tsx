@@ -33,7 +33,7 @@ export default function App() {
     // fetch API (Browser API)
     // axios (Bibliothek)
     // ky (Bibliothek)
-    const response = await fetch("http://localhost:7200/api/plants");
+    const response = await fetch("http://localhost:7200/api/plants?slow=2000");
     const data = await response.json();
     // const plants = data as Plant[];  // <-- Type cast, nur zur Buildzeit
     const plants = Plant.array().parse(data); // <-- Validierung zur Laufzeit
@@ -41,17 +41,7 @@ export default function App() {
     setPlants(plants);
   }
 
-  // - nach JEDEM commit ausführen
-  // - nach dem ERSTEN commit ausführen: 2. Paramter leeres Array []
-  // - nur ausführen, wenn sich etwas geändert (Dependency Array)
-  // - Wahrscheinlich braucht ihr keinen Effekt: https://react.dev/learn/you-might-not-need-an-effect
-  useEffect( () => {
-   // Effect Callback funktion
-    console.log(interval);
-    loadPlants();
-  }, [ interval ])
 
-  // loadPlants();
 
   // Virtual DOM -> Beschreibung der Oberfläche -> keine Seiteneffekte!
 
@@ -63,7 +53,7 @@ export default function App() {
       {/*<button className={"primary"} onClick={() => loadPlants()}>Lade Pflanzen</button>*/}
       <PlantCardList plants={plants} />
 
-      <PlantForm />
+      {/*<PlantForm />*/}
 
       {/*<PlantCard*/}
       {/*  name={"Tulpe"}*/}
