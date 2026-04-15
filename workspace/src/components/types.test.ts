@@ -2,6 +2,21 @@ import { describe, expect, it } from "vitest";
 
 import { Plant } from "./types.ts";
 
+
+function add(a: number, b: number) {
+  return a + b;
+}
+// @Test in Junit
+//   @DisplayName in Junit
+it("Summiert zwei Zahlen", () => {
+  const result = add(1,2);
+  // assertThat(result).toEqual(3);
+  expect(result).toBe(3);
+})
+
+
+
+
 describe("PlantCard zod type", () => {
   it("works with all required properties", () => {
     expect(basePlant().validate()).toBeZodSuccess();

@@ -5,6 +5,7 @@
 //  alternativ mit SCSS/LESS
 import styles from "./IntervalSelector.module.css"
 import { useDeferredValue, useState } from "react";
+import { UseFormRegister } from "react-hook-form";
 //   Verwendung: <div className={styles.IntervalSelector}>...</div>
 
 // CSS-in-JS
@@ -18,6 +19,7 @@ type IntervalSelectorProps = {
 
 // void onIntervalChange(int newInterval)
 
+// Eigene Komponenten mit React Hook Form verbinden: https://react-hook-form.com/get-started#Integratinganexistingform
 export default function IntervalSelector(props: IntervalSelectorProps) {
 
   // Kontrollierte Komponenten (controlled componente)
@@ -42,6 +44,7 @@ console.log("myInterval", myInterval);
     <label>Interval</label>
     <input type={"number"}
            value={myInterval}
+           {...props}
            onChange={ event => {
              console.log("Value", event.target.value);
              const parsedInterval = parseInt(event.target.value);
